@@ -1,0 +1,1 @@
+Player {name} solved the word, and it was "{word}"! We will now start the next round!
