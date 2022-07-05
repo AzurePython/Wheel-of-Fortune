@@ -1,0 +1,115 @@
+def readDictionaryFile():
+    read in dictionary making sure to strip \n and lower
+
+def readTurnTxtFile():
+    read in turn text file using open, then read
+    
+
+
+def readFinalRoundTxtFile():
+    read in final round text file using open then read
+
+def readRoundStatusTxtFile():
+    same as above
+ 
+
+def readWheelTxtFile():
+    open the file, then readlines, then use a for loop to go through this file, then apend each line to the wheellist
+
+def getPlayerInfo():
+    global players
+    print('Welcome to Wheel of Fortune! Please enter the name of the three players!')
+    players[0]["name"] = input('Please enter the name of player 1:')
+    players[1]["name"] = input('Please enter the name of player 2:')
+    players[2]["name"] = input('Please enter the name of player 3:')
+
+
+def gameSetup():
+    run all of the necessary starting functions
+    
+def getWord():
+    use random choice to get a word from dictionary,
+    then use a for loop to loop through the word and create a list of underscores based on that
+
+def wofRoundSetup():
+    set each players round total to 0, then use random to get a random number from 0-2 and assign init player to that
+
+
+def spinWheel(playerNum):
+    if:
+      check for bankrupcy, get rid of round money, print message and return false
+    elif:
+      check for lose turn, print message return false
+    else:
+        use guessletter, if goodguess a false, break
+        if googuess == true then add the money times the number of consonatets they got
+        
+    
+
+def guessletter(letter, playerNum): 
+    use if letter in round word, then use the same function from the guessing game
+      show the current blankWord
+      sett goodguess = true
+     else:
+        print message, set goodguss = false
+
+    
+    return goodGuess, count
+
+def buyVowel(playerNum):
+    
+  check if player has 250 dollars
+  ask for vowel, check if it is a vowel
+  use goodguess on vowel, then subtract 250 from their money
+    
+    return goodGuess      
+        
+def guessWord(playerNum):
+  
+    ask for word, check if it equals to the roundword, and then populate blankwod if it does
+  
+    
+    return False
+    
+    
+def wofTurn(playerNum):  
+   print out turn text,
+   use a while loop to keep them in turn while stillinturn is true
+   check at the top of while loop to see if word is finished
+   set choice = to user input of either s, b , or g
+   go into premade if statements
+
+
+def wofRound():
+    read the round status file
+    add one to round num variable, show the round
+    set game total = to round total
+    
+    use a while loop to loop through player numbers, and check at the top for the word being solved
+    
+    
+def wofFinalRound():
+   use thhe max function to find player with the most total earnings
+   print finalround text
+   use guessletter on rstlne
+   print out instructions
+   ask for 3 consonates and vowel, then check using guessletter
+   check to make sure word is not already finished, nd if it is print the final message
+   show the player the word after the guesses, then ask thhem to guess word
+   use guessword() to check word
+   if correct word, final message,
+   if not correct word, let them know and show the word
+
+
+def main():
+    gameSetup()    
+
+    for i in range(0,maxrounds):
+        if i in [0,1]:
+            wofRound()
+        else:
+            wofFinalRound()
+    
+    
+if __name__ == "__main__":
+    main()
