@@ -1,0 +1,4 @@
+========================================
+This is the FINAL ROUND!! 
+{name} won the most amount of money throughout the previous
+two rounds at {money} dollars, so they will be competing in the final round!

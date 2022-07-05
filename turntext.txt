@@ -1,0 +1,2 @@
+It is currently {name}'s turn, and they have {money} dollars this round.
+So far the word looks like: {word}
