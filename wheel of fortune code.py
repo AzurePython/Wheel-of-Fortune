@@ -24,7 +24,7 @@ vowels = {"a", "e", "i", "o", "u"}
 roundstatus = ""
 finalroundtext = ""
 
-
+#reads in dictionary file and appends values to the dictionary list
 def readDictionaryFile():
     global dictionary
     df = open('dictionary.txt', 'r')
@@ -32,25 +32,27 @@ def readDictionaryFile():
     for i in range(len(dictionary)):
         dictionary[i] = str(dictionary[i]).strip().lower()
 
+#reads in the turn text file
 def readTurnTxtFile():
     global turntext   
     readturntext = open(turntextloc)
     turntext = readturntext.read()
     
 
-
+#reads in the final round text file
 def readFinalRoundTxtFile():
     global finalroundtext
     global finalroundloc
     readfinalroundtext = open(finalRoundTextLoc)
     finalroundtext = readfinalroundtext.read()
 
+#reads in the round status text file         
 def readRoundStatusTxtFile():
     global roundstatus
     readroundstatus = open(roundstatusloc)
     roundstatus = readroundstatus.read()
  
-
+#reads in the wheel text file and appends values to wheellist
 def readWheelTxtFile():
     global wheellist
     readwheel = open('wheeldata.txt')
@@ -58,6 +60,7 @@ def readWheelTxtFile():
     for i in readwheellines:
         wheellist.append(i.rstrip())
 
+#gets names of players
 def getPlayerInfo():
     global players
     print('Welcome to Wheel of Fortune! Please enter the name of the three players!')
@@ -65,7 +68,7 @@ def getPlayerInfo():
     players[1]["name"] = input('Please enter the name of player 2:')
     players[2]["name"] = input('Please enter the name of player 3:')
 
-
+#sets up game by runnning basic functions
 def gameSetup():
     # Read in File dictionary
     # Read in Turn Text Files
@@ -79,7 +82,8 @@ def gameSetup():
     getPlayerInfo()
     readRoundStatusTxtFile()
     readFinalRoundTxtFile() 
-    
+
+#gets a random word from dictionary, and creates a list of underscores that is the same length as the word       
 def getWord():
     global dictionary
     roundWord = random.choice(dictionary)
@@ -87,6 +91,7 @@ def getWord():
     blankWord = ['_' for i in roundWord]
     return roundWord,blankWord
 
+#sets up the round, getting the word and blankword and setting the players round total to 0, and getting a random player num
 def wofRoundSetup():
     global players
     global roundWord
@@ -98,7 +103,8 @@ def wofRoundSetup():
 
     return initPlayer
 
-
+#gets a random item from wheellist, checks for bankrupt and lose turn (returning turn false if so). Checks if letter in turn
+#and if it is, adds money to player round and returns stillinturn = true
 def spinWheel(playerNum):
     global wheellist
     global players
@@ -137,6 +143,7 @@ def spinWheel(playerNum):
     return stillinTurn
 
 
+#checks to see if letter is in word and populates blankWord with the letter. Returns goodguess True if it is, False if it is not
 def guessletter(letter, playerNum): 
     global players
     global roundWord
@@ -155,18 +162,16 @@ def guessletter(letter, playerNum):
     else:
         print(f'Sorry, {letter} was not in the word.')
         goodGuess = False
-    # Change position of found letter in blankWord to the letter instead of underscore 
-    # return goodGuess= true if it was a correct guess DONE
-    # return count of letters in word. 
-    # ensure letter is a consonate.
     
     return goodGuess, count
 
+#checks to see if thhey have enough money to buy a vowel, and if the letter is a vowel, then uses guessletter and
+#subtracts 250 dollars from round total
 def buyVowel(playerNum):
     global players
     global vowels
     
-    # Take in a player number
+ 
     if players[playerNum]['roundtotal'] >= 250:
         while True:
             vowelguess = input('Please enter a vowel: ')
@@ -178,45 +183,34 @@ def buyVowel(playerNum):
     else:
         print('Sorry, you do not have enough money for buying a vowel.')
         goodGuess = True
-    # Use guessLetter function to see if the letter is in the file
-    # Ensure letter is a vowel
-    # If letter is in the file let goodGuess = True
     
     return goodGuess      
-        
+
+#asks for a word, then checks if that is the same as the roundword. If it is, populates blankword with the word
+#otherwise lets them know that it was not the word. Returns false either way, because turn is over no matter what.
 def guessWord(playerNum):
     global players
     global blankWord
     global roundWord
-    
-    # Take in player number
+
     wordguess = input('Please guess the word: ')
     
-    # Ask for input of the word and check if it is the same as wordguess
     if wordguess == roundWord:
         blankWord = [char for char in roundWord]
         print(f"That's right! The word was {blankWord}")
-    # Fill in blankList with all letters, instead of underscores if correct 
-    # return False ( to indicate the turn will finish) 
     else:
         print('Sorry, that was not the word.')
     
     return False
     
-    
+#Prints turn text, and gives user a menu while they are still in turn    
 def wofTurn(playerNum):  
     global roundWord
     global blankWord
     global turntext
     global players
 
-    # take in a player number. 
-    # use the string.format method to output your status for the round
     print(turntext.format(name = players[playerNum]["name"],money = players[playerNum]["roundtotal"], word = blankWord))
-    # and Ask to (s)pin the wheel, (b)uy vowel, or G(uess) the word using
-    
-    # Keep doing all turn activity for a player until they guess wrong
-    # Do all turn related activity including update roundtotal 
     
     stillinTurn = True
     while stillinTurn:
@@ -224,9 +218,6 @@ def wofTurn(playerNum):
             stillinTurn = False
             break
         choice = input(f'Please enter S for spin, B for buy a vowel, and G to guess the word')
-        
-        # use the string.format method to output your status for the round
-        # Get user input S for spin, B for buy a vowel, G for guess the word
                 
         if(choice.strip().upper() == "S"):
             stillinTurn = spinWheel(playerNum)
@@ -236,11 +227,9 @@ def wofTurn(playerNum):
             stillinTurn = guessWord(playerNum)
         else:
             print("Not a correct option")        
-    
-    # Check to see if the word is solved, and return false if it is,
-    # Or otherwise break the while loop of the turn.     
+  
 
-
+#Put players game total = to round total, prints round status and iterates through the players until the round is over
 def wofRound():
     global players
     global roundWord
@@ -279,15 +268,15 @@ def wofRound():
     
 
     
-    
+#Finds the player with the most winnings, prints the final round text file, uses guessletter to find rstlne in the new word,
+# asks player for three consonates and vowel, and then checks those using guess letter. Finallyy asks user to guess the word
+# and prints a final message of their total winnings if they guess the word correctly. Otherwise lets them know it was wrong.
 def wofFinalRound():
     global roundWord
     global blankWord
     global finalroundtext
     winplayer = 0
     amount = 0
-    
-    # Find highest gametotal player.  They are playing.
     
     maxamount = max(players[0]['gametotal'], players[1]['gametotal'], players[2]['gametotal'])
     for k,v in players.items():
@@ -302,10 +291,7 @@ def wofFinalRound():
     guessletter('l',winplayer)
     guessletter('n',winplayer)
     guessletter('e',winplayer)
-    # Print out instructions for that player and who the player is.
-    # Use the getWord function to reset the roundWord and the blankWord ( word with the underscores)
-    # Use the guessletter function to check for {'R','S','T','L','N','E'}
-    # Print out the current blankWord with whats in it after applying {'R','S','T','L','N','E'}
+
     print(f'RSTLNE have already been guessed, which leaves you with {blankWord}')
     print('You now get to guess 3 consonates and 1 vowel, and then you will guess the word if you have not gotten it already.')
     print('Please guess 3 more consonates and 1 more vowel')
@@ -325,14 +311,11 @@ def wofFinalRound():
             players[winplayer]['gametotal'] += 100000
             print('Congratulations, you guessed the word correctly!')
             print(f"The word was {roundWord}, and {players[winplayer]['name']} has won {players[winplayer]['gametotal']} dollars!")
-        # Print out the current blankWord again
         else:
             print(f'Sorry, wrong word. The word was {roundWord}.')
-        # Remember guessletter should fill in the letters with the positions in blankWord
-        # Get user to guess word
-        # If they do, add finalprize and gametotal and print out that the player won 
 
 
+#Runs game setup, then iterates through two rounds, and then finally the final round.
 def main():
     gameSetup()    
 
@@ -342,6 +325,6 @@ def main():
         else:
             wofFinalRound()
     
-    
+#Starts the game    
 if __name__ == "__main__":
     main()
